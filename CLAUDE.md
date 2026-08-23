@@ -2,10 +2,22 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Repository status
+## Commands
 
-This repository (`ryanktb/-1`) is currently empty — no commits, source files, build configuration, or tests exist yet. There is no codebase structure, dependency setup, or development workflow to document.
+- `npm install` — install dependencies
+- `npm run dev` — start the dev server (http://localhost:3000)
+- `npm run build` — production build (also type-checks and lints)
+- `npm run start` — run the production build
+- `npm run lint` — run ESLint
 
-When code is added to this repository, update this file to cover:
-- Build, lint, and test commands (including how to run a single test)
-- The high-level architecture and how major pieces of the codebase fit together
+There is no test suite yet.
+
+## Architecture
+
+Next.js (App Router) + TypeScript, styled with plain CSS (no CSS framework).
+
+- `app/layout.tsx`, `app/page.tsx`, `app/globals.css` — root layout and the single page, which renders `<TaskList />`.
+- `components/TaskList.tsx` — client component (`"use client"`) holding all task state and logic: add, toggle-done, delete. This is where the app's actual behavior lives.
+- `lib/types.ts` — shared `Task` type (`{ id, text, done }`).
+
+There is no backend or database. `TaskList` persists tasks directly to the browser's `localStorage` (key `"tasks"`) via `useEffect` — load on mount, save on every change. If server-side persistence is added later, that read/write logic in `TaskList.tsx` is the place to replace, and this file should be updated to describe the new data flow.
